@@ -1,5 +1,5 @@
-<div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-800">
-    <table {{ $attributes->merge(['class' => 'min-w-full divide-y w-full divide-gray-200 dark:divide-gray-700 text-sm text-left']) }}>
+<div class="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm dark:border-white/5 dark:bg-[#333931]">
+    <table {{ $attributes->merge(['class' => 'min-w-full w-full divide-y divide-gray-200 text-left text-sm dark:divide-white/5']) }}>
         {{ $slot }}
     </table>
 </div>
