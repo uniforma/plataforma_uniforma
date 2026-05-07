@@ -73,6 +73,15 @@
 
                     <pre class="overflow-x-auto rounded-lg bg-surface-950 p-4 text-xs leading-6 text-gray-100">{{ json_encode($log->properties, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
                 </div>
+
+                <div class="space-y-4 mt-4">
+                    <div>
+                        <h3 class="text-sm font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-200">Atributos Alterados</h3>
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Lista de atributos que foram modificados durante o evento.</p>
+                    </div>
+
+                    <pre class="overflow-x-auto rounded-lg bg-surface-950 p-4 text-xs leading-6 text-gray-100">{{ json_encode($log->attribute_changes, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
+                </div>
             </x-card>
         </div>
     </div>
