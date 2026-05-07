@@ -37,7 +37,8 @@ class LogController extends Controller implements HasMiddleware
      */
     public function index(Request $request)
     {
-        $logs = $this->logRepository->all($request->all());
+        $logs = $this->logRepository->all($request);
+
         return view('logs.index', compact('logs'));
     }
 
@@ -47,6 +48,7 @@ class LogController extends Controller implements HasMiddleware
     public function show(string $id)
     {
         $log = $this->logRepository->find($id);
+
         return view('logs.show', compact('log'));
     }
 }
