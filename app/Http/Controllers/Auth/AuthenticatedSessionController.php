@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,14 +25,27 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        $user = User::query()
+            ->where('email', (string) $request->string('email'))
+            ->first();
 
-        $guard = $request->user() && $request->user()->hasRole('admin') ? 'admin' : 'user';
-        Auth::guard($guard)->login($request->user());   
+        $guard = $user?->resolveAuthGuardName();
+
+        if (! $user || ! $guard) {
+            $request->failAuthentication();
+        }
+
+        $request->authenticateWithGuard($guard);
+
+        foreach (['user', 'admin'] as $otherGuard) {
+            if ($otherGuard !== $guard) {
+                Auth::guard($otherGuard)->logout();
+            }
+        }
 
         $request->session()->regenerate();
 
-        $dashboardRoute = $guard === 'admin' ? 'admin.dashboard' : 'dashboard';
+        $dashboardRoute = $guard === 'admin' ? 'admin.dashboard' : 'welcome';
 
         return redirect()->intended(route($dashboardRoute, absolute: false));
     }
@@ -41,7 +55,9 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        foreach (['user', 'admin'] as $guard) {
+            Auth::guard($guard)->logout();
+        }
 
         $request->session()->invalidate();
 

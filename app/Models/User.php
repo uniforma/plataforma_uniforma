@@ -38,6 +38,13 @@ class User extends Authenticatable
         'date_to:created_at' => 'date_to',
     ];
 
+    public function resolveAuthGuardName(): ?string
+    {
+        return $this->roles()
+            ->limit(1)
+            ->value('guard_name');
+    }
+
     /**
      * Get the attributes that should be cast.
      *

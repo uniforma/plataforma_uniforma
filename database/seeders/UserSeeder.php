@@ -19,7 +19,15 @@ class UserSeeder extends Seeder
             'email' => 'admin@email.com',
             'password' => bcrypt('password'),
         ]);
+        $userTest = User::create([
+            'name' => 'Test User',
+            'email' => 'test@email.com',
+            'password' => bcrypt('password'),
+        ]);
+
         $adminRole = Role::where('name', 'admin')->first();
+        $userRole = Role::where('name', 'user')->first();
         $user->assignRole($adminRole);
+        $userTest->assignRole($userRole);
     }
 }
