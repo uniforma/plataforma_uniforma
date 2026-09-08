@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DemandController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
@@ -13,8 +14,7 @@ Route::get('/', function () {
 });
 
 Route::group(['middleware' => ['auth:user'], 'prefix' => 'user'], function () {
-    Route::get('/', function () {return view('welcome');})->name('welcome');
-
+    Route::get('/vitrineSub', [DemandController::class, 'index'])->name('user.vitrine');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

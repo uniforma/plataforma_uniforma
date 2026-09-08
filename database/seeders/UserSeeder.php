@@ -29,5 +29,15 @@ class UserSeeder extends Seeder
         $userRole = Role::where('name', 'user')->first();
         $user->assignRole($adminRole);
         $userTest->assignRole($userRole);
+
+        User::factory(30)->create()->each(function ($user) use ($userRole) {
+            $user->assignRole($userRole);
+        });
+
+        // (Opcional) Cria mais 2 administradores aleatórios
+        User::factory(10)->create()->each(function ($admin) use ($adminRole) {
+            $admin->assignRole($adminRole);
+        });
+    
     }
 }

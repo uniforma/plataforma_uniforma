@@ -38,6 +38,22 @@ class PermissionSeeder extends Seeder
             ['name' => 'restore_roles', 'guard_name' => 'admin', 'description' => 'Permissão para restaurar perfis'],
             ['name' => 'force_delete_roles', 'guard_name' => 'admin', 'description' => 'Permissão para deletar permanentemente perfis'],
 
+            // Submissoes
+            ['name' => 'view_submissoes', 'guard_name' => 'admin', 'description' => 'Permissão para visualizar submissões'],
+            ['name' => 'create_submissoes', 'guard_name' => 'admin', 'description' => 'Permissão para criar submissões'],
+            ['name' => 'edit_submissoes', 'guard_name' => 'admin', 'description' => 'Permissão para editar submissões'],
+            ['name' => 'delete_submissoes', 'guard_name' => 'admin', 'description' => 'Permissão para deletar submissões'],
+            ['name' => 'restore_submissoes', 'guard_name' => 'admin', 'description' => 'Permissão para restaurar submissões'],
+            ['name' => 'force_delete_submissoes', 'guard_name' => 'admin', 'description' => 'Permissão para deletar permanentemente submissões'],
+
+            // Voto Submissoes
+            ['name' => 'view_vote_submissoes', 'guard_name' => 'admin', 'description' => 'Permissão para visualizar votos em submissões'],
+            ['name' => 'create_vote_submissoes', 'guard_name' => 'admin', 'description' => 'Permissão para criar votos em submissões'],
+            ['name' => 'edit_vote_submissoes', 'guard_name' => 'admin', 'description' => 'Permissão para editar votos em submissões'],
+            ['name' => 'delete_vote_submissoes', 'guard_name' => 'admin', 'description' => 'Permissão para deletar votos em submissões'],
+            ['name' => 'restore_vote_submissoes', 'guard_name' => 'admin', 'description' => 'Permissão para restaurar votos em submissões'],
+            ['name' => 'force_delete_vote_submissoes', 'guard_name' => 'admin', 'description' => 'Permissão para deletar permanentemente votos em submissões'],
+
             // Permissions
             ['name' => 'view_permissions', 'guard_name' => 'admin', 'description' => 'Permissão para visualizar permissões'],
 

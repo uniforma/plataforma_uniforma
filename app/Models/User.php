@@ -14,6 +14,8 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Activitylog\Support\LogOptions;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Submissao;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
@@ -69,5 +71,10 @@ class User extends Authenticatable
             ->dontLogEmptyChanges()
             ->logOnlyDirty()
             ->logAll();
+    }
+
+    public function UsuarioSubmissao(): HasMany
+    {
+        return $this->hasMany(Submissao::class, 'autor_id');
     }
 }

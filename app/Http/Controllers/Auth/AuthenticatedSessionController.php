@@ -45,7 +45,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        $dashboardRoute = $guard === 'admin' ? 'admin.dashboard' : 'welcome';
+        $dashboardRoute = $guard === 'admin' ? 'admin.dashboard' : 'user.vitrine';
 
         return redirect()->intended(route($dashboardRoute, absolute: false));
     }
