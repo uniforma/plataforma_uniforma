@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 class RolesSeeder extends Seeder
 {
@@ -14,17 +14,30 @@ class RolesSeeder extends Seeder
      */
     public function run(): void
     {
-        $roles = [
-            ['name' => 'admin', 'guard_name' => 'admin'],
-            ['name' => 'user', 'guard_name' => 'user']
-        ];
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
 
-        foreach ($roles as $role) {
-            Role::create($role);
+        $adminRole = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'admin']);
+        $discenteRole = Role::firstOrCreate(['name' => 'discente', 'guard_name' => 'user']);
+        Role::firstOrCreate(['name' => 'docente', 'guard_name' => 'user']);
+        Role::firstOrCreate(['name' => 'tecnico', 'guard_name' => 'user']);
+
+        $legacyRole = Role::query()
+            ->where('name', 'user')
+            ->where('guard_name', 'user')
+            ->first();
+
+        if ($legacyRole) {
+            $legacyRole->users()->withTrashed()->each(function ($user) use ($legacyRole, $discenteRole) {
+                $user->assignRole($discenteRole);
+                $user->removeRole($legacyRole);
+            });
+
+            $legacyRole->delete();
         }
 
-        $permissions = Permission::all();
-        $adminRole = Role::where('name', 'admin')->first();
+        $permissions = Permission::query()->where('guard_name', 'admin')->get();
         $adminRole->syncPermissions($permissions);
+
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
     }
 }

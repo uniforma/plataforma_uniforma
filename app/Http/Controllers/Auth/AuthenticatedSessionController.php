@@ -15,8 +15,16 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(Request $request): View
     {
+        $redirect = $request->query('redirect');
+
+        if (is_string($redirect) && str_starts_with($redirect, '/') && ! str_starts_with($redirect, '//')) {
+            $request->session()->put('url.intended', $redirect);
+        } elseif ($request->has('redirect')) {
+            $request->session()->forget('url.intended');
+        }
+
         return view('auth.login');
     }
 
@@ -45,9 +53,14 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        $dashboardRoute = $guard === 'admin' ? 'admin.dashboard' : 'user.vitrine';
+        $dashboardRoute = $guard === 'admin' ? 'admin.dashboard' : 'home';
+        $intended = $request->session()->pull('url.intended');
 
-        return redirect()->intended(route($dashboardRoute, absolute: false));
+        if ($this->isAllowedDestination($intended, $guard)) {
+            return redirect($intended);
+        }
+
+        return redirect()->route($dashboardRoute);
     }
 
     /**
@@ -64,5 +77,29 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    private function isAllowedDestination(mixed $destination, string $guard): bool
+    {
+        if (! is_string($destination)) {
+            return false;
+        }
+
+        $isRelative = str_starts_with($destination, '/') && ! str_starts_with($destination, '//');
+        $isApplicationUrl = str_starts_with($destination, rtrim((string) config('app.url'), '/').'/');
+
+        if (! $isRelative && ! $isApplicationUrl) {
+            return false;
+        }
+
+        $path = parse_url($destination, PHP_URL_PATH);
+
+        if (! is_string($path)) {
+            return false;
+        }
+
+        return $guard === 'admin'
+            ? str_starts_with($path, '/admin/')
+            : str_starts_with($path, '/user/') || str_starts_with($path, '/submissoes/');
     }
 }

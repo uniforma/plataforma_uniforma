@@ -4,25 +4,26 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Notifications\ResetPasswordNotification;
 use App\Traits\Searchable;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Activitylog\Support\LogOptions;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\Submissao;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, HasRoles, LogsActivity, Searchable;
+    use HasFactory, HasRoles, LogsActivity, Notifiable, Searchable, SoftDeletes;
 
     /**
      * The columns that can be searched.
@@ -60,13 +61,13 @@ class User extends Authenticatable
         ];
     }
 
-     /**
+    /**
      * Get the activity log options for the model.
      */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->setDescriptionForEvent(fn(string $eventName) => ActivityLog::getDescricaoGenericaEvento($eventName))
+            ->setDescriptionForEvent(fn (string $eventName) => ActivityLog::getDescricaoGenericaEvento($eventName))
             ->useLogName('Usuário')
             ->dontLogEmptyChanges()
             ->logOnlyDirty()
@@ -76,5 +77,25 @@ class User extends Authenticatable
     public function UsuarioSubmissao(): HasMany
     {
         return $this->hasMany(Submissao::class, 'autor_id');
+    }
+
+    public function submissoes(): HasMany
+    {
+        return $this->hasMany(Submissao::class, 'autor_id');
+    }
+
+    public function votes(): HasMany
+    {
+        return $this->hasMany(VoteSubmission::class);
+    }
+
+    public function teachingInterests(): HasMany
+    {
+        return $this->hasMany(TeachingInterest::class);
+    }
+
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }

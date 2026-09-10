@@ -23,7 +23,9 @@ class AdminRepository extends BaseRepository
      */
     public function all($request = null, $perPage = 15): LengthAwarePaginator
     {
-        $this->model = $this->model->withoutRole('user', 'user')->with('roles');
+        $this->model = $this->model->newQuery()
+            ->whereHas('roles', fn ($query) => $query->where('guard_name', 'admin'))
+            ->with('roles');
 
         return parent::all($request, $perPage);
     }
@@ -33,7 +35,9 @@ class AdminRepository extends BaseRepository
      */
     public function find(int $id): ?User
     {
-        $user = parent::find($id);
+        $user = User::query()
+            ->whereHas('roles', fn ($query) => $query->where('guard_name', 'admin'))
+            ->findOrFail($id);
         $user->load('permissions', 'roles');
 
         return $user;
@@ -61,7 +65,8 @@ class AdminRepository extends BaseRepository
         $roles = Arr::wrap($data['roles'] ?? []);
         unset($data['roles']);
 
-        $user = parent::update($id, $data);
+        $user = $this->find($id);
+        $user->update($data);
 
         if ($user) {
             $user->syncRoles($roles);
@@ -75,7 +80,7 @@ class AdminRepository extends BaseRepository
      */
     public function delete(int $id): bool
     {
-        return parent::delete($id);
+        return (bool) $this->find($id)->delete();
     }
 
     /**
@@ -83,7 +88,12 @@ class AdminRepository extends BaseRepository
      */
     public function restore(int $id): bool
     {
-        return parent::restore($id);
+        $admin = User::query()
+            ->onlyTrashed()
+            ->whereHas('roles', fn ($query) => $query->where('guard_name', 'admin'))
+            ->findOrFail($id);
+
+        return (bool) $admin->restore();
     }
 
     /**
@@ -91,6 +101,11 @@ class AdminRepository extends BaseRepository
      */
     public function forceDelete(int $id): bool
     {
-        return parent::forceDelete($id);
+        $admin = User::query()
+            ->onlyTrashed()
+            ->whereHas('roles', fn ($query) => $query->where('guard_name', 'admin'))
+            ->findOrFail($id);
+
+        return (bool) $admin->forceDelete();
     }
 }

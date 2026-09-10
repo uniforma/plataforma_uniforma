@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
@@ -26,18 +25,19 @@ class UserSeeder extends Seeder
         ]);
 
         $adminRole = Role::where('name', 'admin')->first();
-        $userRole = Role::where('name', 'user')->first();
+        $userRoles = Role::where('guard_name', 'user')->get();
+        $discenteRole = $userRoles->firstWhere('name', 'discente');
         $user->assignRole($adminRole);
-        $userTest->assignRole($userRole);
+        $userTest->assignRole($discenteRole);
 
-        User::factory(30)->create()->each(function ($user) use ($userRole) {
-            $user->assignRole($userRole);
+        User::factory(30)->create()->each(function ($user) use ($userRoles) {
+            $user->assignRole($userRoles->random());
         });
 
         // (Opcional) Cria mais 2 administradores aleatórios
         User::factory(10)->create()->each(function ($admin) use ($adminRole) {
             $admin->assignRole($adminRole);
         });
-    
+
     }
 }

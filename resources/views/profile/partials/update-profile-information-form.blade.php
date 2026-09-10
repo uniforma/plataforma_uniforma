@@ -14,7 +14,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route($profileRoutePrefix . '.update') }}" class="mt-6 space-y-6">
         @csrf
         @method('patch')
 
@@ -62,7 +62,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-button>{{ __('Save') }}</x-button>
+            <x-button type="submit">{{ __('Save') }}</x-button>
 
             @if (session('status') === 'profile-updated')
                 <p

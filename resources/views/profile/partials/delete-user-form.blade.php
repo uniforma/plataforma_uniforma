@@ -6,7 +6,7 @@
         </h2>
 
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
+            Ao excluir sua conta, seu acesso será desativado. Um administrador ainda poderá restaurá-la antes de uma exclusão definitiva.
         </p>
     </header>
 
@@ -17,7 +17,7 @@
     >{{ __('Delete Account') }}</x-button>
 
     <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
-        <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
+        <form method="post" action="{{ route($profileRoutePrefix . '.destroy') }}" class="p-6">
             @csrf
             @method('delete')
 
@@ -26,7 +26,7 @@
             </h2>
 
             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
+                Sua conta será desativada. Informe sua senha para confirmar.
             </p>
 
             <div class="mt-6">
@@ -45,7 +45,7 @@
                     {{ __('Cancel') }}
                 </x-button>
 
-                <x-button variant="danger" class="ms-3">
+                <x-button type="submit" variant="danger" class="ms-3">
                     {{ __('Delete Account') }}
                 </x-button>
             </div>
