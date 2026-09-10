@@ -16,8 +16,11 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
+        $guard = $this->currentGuard();
+
+        return view($guard === 'admin' ? 'profile.edit' : 'profile.user-edit', [
+            'user' => auth($guard)->user(),
+            'profileRoutePrefix' => $guard.'.profile',
         ]);
     }
 
@@ -26,15 +29,17 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $guard = $this->currentGuard();
+        $user = auth($guard)->user();
+        $user->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        $user->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route($guard.'.profile.edit')->with('status', 'profile-updated');
     }
 
     /**
@@ -42,13 +47,15 @@ class ProfileController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $guard = $this->currentGuard();
+
         $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
+            'password' => ['required', 'current_password:'.$guard],
         ]);
 
-        $user = $request->user();
+        $user = auth($guard)->user();
 
-        Auth::logout();
+        Auth::guard($guard)->logout();
 
         $user->delete();
 
@@ -56,5 +63,10 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    private function currentGuard(): string
+    {
+        return auth('admin')->check() ? 'admin' : 'user';
     }
 }
