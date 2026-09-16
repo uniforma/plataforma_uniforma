@@ -49,7 +49,7 @@
                             <div class="text-xs font-medium text-gray-500">{{ Auth::user()->email }}</div>
                         </div>
 
-                        <x-dropdown-link :href="route('profile.edit')">
+                        <x-dropdown-link :href="route('admin.profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
 

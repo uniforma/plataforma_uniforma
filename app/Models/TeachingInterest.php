@@ -8,17 +8,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Activitylog\Support\LogOptions;
 
-class VoteSubmission extends Model
+class TeachingInterest extends Model
 {
-    use HasFactory, LogsActivity, SoftDeletes;
+    use HasFactory, SoftDeletes, LogsActivity;
 
-    protected $table = 'vote_submissions';
-
-    protected $fillable = ['request_id', 'user_id'];
+    protected $fillable = ['submissao_id', 'user_id'];
 
     public function submissao()
     {
-        return $this->belongsTo(Submissao::class, 'request_id');
+        return $this->belongsTo(Submissao::class);
     }
 
     public function user()
@@ -32,8 +30,8 @@ class VoteSubmission extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->setDescriptionForEvent(fn (string $eventName) => ActivityLog::getDescricaoGenericaEvento($eventName))
-            ->useLogName('Voto Submissao')
+            ->setDescriptionForEvent(fn(string $eventName) => ActivityLog::getDescricaoGenericaEvento($eventName))
+            ->useLogName('Interesse de Ensino')
             ->dontLogEmptyChanges()
             ->logOnlyDirty()
             ->logAll();

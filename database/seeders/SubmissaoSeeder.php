@@ -1,15 +1,10 @@
 <?php
 
 namespace Database\Seeders;
+
 use App\Models\Submissao;
 use App\Models\User;
-
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Database\Factories\SubmissaoFactory;
-use Spatie\Permission\Models\Role;
-
-
 
 class SubmissaoSeeder extends Seeder
 {
@@ -19,17 +14,17 @@ class SubmissaoSeeder extends Seeder
     public function run(): void
     {
         //
-       $roleUser = Role::where('name', 'user')->first();
-        $roleAdmin = Role::where('name', 'admin')->first();
-
-        // 3. Usa o método role() do Spatie passando o objeto, e não a string!
-        // Isso resolve o erro de guard_name instantaneamente.
-        $autores = User::role($roleUser)->get();
-        $curadores = User::role($roleAdmin)->get();
+        $autores = User::query()
+            ->whereHas('roles', fn ($query) => $query->where('guard_name', 'user'))
+            ->get();
+        $curadores = User::query()
+            ->whereHas('roles', fn ($query) => $query->where('guard_name', 'admin'))
+            ->get();
 
         // Trava de segurança
         if ($autores->isEmpty() || $curadores->isEmpty()) {
             $this->command->error('Rode o UserSeeder primeiro para gerar os usuários!');
+
             return;
         }
 

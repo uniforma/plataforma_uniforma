@@ -2,50 +2,65 @@
 
 namespace App\Models;
 
+use App\Enums\SubmissaoStatus;
+use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\VoteSubmission;
-use App\Models\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Activitylog\Support\LogOptions;
 
 class Submissao extends Model
 {
-  use HasFactory, LogsActivity;
+    use HasFactory, LogsActivity, Searchable, SoftDeletes;
 
-  protected $table = 'submissoes';
-  protected $fillable = ['id', 'title', 'background', 'target_audience', 'knowledge_field', 'status', 'autor_id', 'curator_id'];
+    protected $table = 'submissoes';
 
-  public function votes()
-  {
-    return $this->hasMany(VoteSubmission::class, 'request_id');
-  }
+    protected $fillable = ['id', 'title', 'background', 'target_audience', 'knowledge_field', 'status', 'autor_id', 'curator_id'];
 
-  public function autor()
-  {
-    // Se a FK for 'autor_id':
-    return $this->belongsTo(User::class, 'autor_id');
+    protected $searchable = ['title', 'background', 'target_audience', 'knowledge_field', 'autor.name', 'curador.name'];
 
-    // Se for o padrão 'user_id', não precisa do segundo parâmetro:
-    // return $this->belongsTo(User::class);
-  }
+    protected $filterable = [
+        'status' => '=',
+        'curator_id' => '=',
+        'date_from:created_at' => 'date_from',
+        'date_to:created_at' => 'date_to',
+    ];
 
-  public function curador()
-  {
-    return $this->belongsTo(User::class, 'curator_id');
-  }
+    protected $casts = [
+        'status' => SubmissaoStatus::class,
+    ];
 
-  /**
-   * Get the activity log options for the model.
-   */
-  public function getActivitylogOptions(): LogOptions
-  {
-    return LogOptions::defaults()
-      ->setDescriptionForEvent(fn(string $eventName) => ActivityLog::getDescricaoGenericaEvento($eventName))
-      ->useLogName('Submissao')
-      ->dontLogEmptyChanges()
-      ->logOnlyDirty()
-      ->logAll();
-  }
+    public function votes()
+    {
+        return $this->hasMany(VoteSubmission::class, 'request_id');
+    }
+
+    public function teachingInterests()
+    {
+        return $this->hasMany(TeachingInterest::class);
+    }
+
+    public function autor()
+    {
+        return $this->belongsTo(User::class, 'autor_id')->withTrashed();
+    }
+
+    public function curador()
+    {
+        return $this->belongsTo(User::class, 'curator_id')->withTrashed();
+    }
+
+    /**
+     * Get the activity log options for the model.
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->setDescriptionForEvent(fn (string $eventName) => ActivityLog::getDescricaoGenericaEvento($eventName))
+            ->useLogName('Submissao')
+            ->dontLogEmptyChanges()
+            ->logOnlyDirty()
+            ->logAll();
+    }
 }

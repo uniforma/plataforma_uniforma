@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->softDeletes();
             $table->timestamps();
-            $table->foreignId('request_id')->constrained('submissoes');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreign('request_id')->references('id')->on('submissoes')->cascadeOnDelete();
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->unique(['request_id', 'user_id']);
         });
     }
 

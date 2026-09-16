@@ -12,7 +12,7 @@ class StoreSubmissaoRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return auth('user')->check();
     }
 
     /**
@@ -23,7 +23,20 @@ class StoreSubmissaoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => ['required', 'string', 'max:255'],
+            'background' => ['required', 'string', 'min:20', 'max:5000'],
+            'target_audience' => ['required', 'string', 'max:255'],
+            'knowledge_field' => ['required', 'string', 'max:255'],
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'title' => 'título',
+            'background' => 'contexto',
+            'target_audience' => 'público-alvo',
+            'knowledge_field' => 'área do conhecimento',
         ];
     }
 }
