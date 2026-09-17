@@ -19,11 +19,14 @@ Route::redirect('/user/vitrineSub', '/')->name('user.vitrine');
 Route::group(['middleware' => ['auth:user'], 'prefix' => 'user'], function () {
     Route::get('/submissions', [DemandController::class, 'mine'])->name('user.submissions.index');
     Route::get('/submissions/create', [DemandController::class, 'create'])->name('user.submissions.create');
+    Route::get('/submissions/submission-panel', [DemandController::class, 'showSub'])->name('user.submissions.showSub');
     Route::post('/submissions/create', [DemandController::class, 'store'])->name('user.submissions.store');
     Route::post('/submissions/{submission}/support', [DemandController::class, 'support'])->name('user.submissions.support');
     Route::delete('/submissions/{submission}/support', [DemandController::class, 'removeSupport'])->name('user.submissions.support.destroy');
     Route::post('/submissions/{submission}/teaching-interest', [DemandController::class, 'teachingInterest'])->name('user.submissions.teaching-interest');
     Route::delete('/submissions/{submission}/teaching-interest', [DemandController::class, 'removeTeachingInterest'])->name('user.submissions.teaching-interest.destroy');
+
+
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('user.profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('user.profile.update');

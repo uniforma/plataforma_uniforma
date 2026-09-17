@@ -12,13 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('vote_submissions', function (Blueprint $table) {
-            $table->id();
-            $table->softDeletes();
-            $table->timestamps();
-            $table->foreign('request_id')->references('id')->on('submissoes')->cascadeOnDelete();
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->unique(['request_id', 'user_id']);
-        });
+    $table->id();
+
+    $table->foreignId('request_id')
+        ->constrained('submissoes')
+        ->cascadeOnDelete();
+
+    $table->foreignId('user_id')
+        ->constrained('users')
+        ->cascadeOnDelete();
+
+    $table->timestamps();
+    $table->softDeletes();
+});
     }
 
     /**

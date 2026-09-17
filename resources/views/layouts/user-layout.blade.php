@@ -34,7 +34,7 @@
 
             <nav class="hidden items-center gap-7 text-sm font-medium text-white lg:flex" aria-label="Navegação principal">
                 <a href="{{ route('home') }}" class="transition hover:text-blue-200">Início</a>
-                <a href="{{ route('home') }}#submissoes" class="transition hover:text-blue-200">Submissões</a>
+                <a href="{{ route('user.submissions.showSub') }}#submissoes" class="transition hover:text-blue-200">Submissões</a>
                 <span class="cursor-not-allowed text-white/45" aria-disabled="true" title="Em breve">Sobre Nós <small>Em breve</small></span>
                 <span class="cursor-not-allowed text-white/45" aria-disabled="true" title="Em breve">Cursos <small>Em breve</small></span>
                 @if ($adminUser)

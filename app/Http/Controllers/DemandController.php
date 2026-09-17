@@ -20,6 +20,7 @@ class DemandController extends Controller
         $metrics = $this->demandRepository->metrics();
         $voteDemands = $this->demandRepository->getMoreVoted($userId);
         $recentDemands = $this->demandRepository->getMoreRecent($userId);
+  
 
         return view('users.vitrine-submissao', compact('metrics', 'voteDemands', 'recentDemands'));
     }
@@ -117,4 +118,14 @@ class DemandController extends Controller
 
         return back()->with('status', 'Interesse em ministrar retirado.');
     }
+
+    public function showSub(){
+    $userId = auth('user')->id();
+
+        $allDemands = $this->demandRepository->getAllPublic($userId);
+    return view('users.submission-panel', compact('allDemands'));
+
+    }
+
+
 }

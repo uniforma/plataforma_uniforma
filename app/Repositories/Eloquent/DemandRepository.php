@@ -115,4 +115,12 @@ class DemandRepository extends BaseRepository
 
         return $query;
     }
+
+    public function getAllPublic(?int $userId = null, int $perPage = 15): LengthAwarePaginator
+    {
+    return $this->publicQuery($userId)
+        ->orderByDesc('created_at')
+        ->paginate($perPage)
+        ->withQueryString();
+    }
 }
