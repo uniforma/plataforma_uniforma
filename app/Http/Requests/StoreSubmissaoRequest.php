@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\NoProfanity;
 
 class StoreSubmissaoRequest extends FormRequest
 {
@@ -23,9 +24,9 @@ class StoreSubmissaoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
-            'background' => ['required', 'string', 'min:20', 'max:5000'],
-            'target_audience' => ['required', 'string', 'max:255'],
+            'title' => ['required', 'string', 'max:255', new NoProfanity()],
+            'background' => ['required', 'string', 'min:20', 'max:5000', new NoProfanity()],
+            'target_audience' => ['required', 'string', 'max:255', new NoProfanity()],
             'knowledge_field' => ['required', 'string', 'max:255'],
         ];
     }
