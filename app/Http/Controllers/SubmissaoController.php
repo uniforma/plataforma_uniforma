@@ -2,98 +2,79 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Submissao;
-use App\Http\Requests\StoreSubmissaoRequest;
+use App\Enums\SubmissaoStatus;
 use App\Http\Requests\UpdateSubmissaoRequest;
-use App\Repositories\Eloquent\SubmisssaoRepository;
+use App\Repositories\Eloquent\SubmissaoRepository;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use App\Repositories\Contracts;
 
 class SubmissaoController extends Controller implements HasMiddleware
 {
-    /**
-     * The repository instance.
-     */
-    protected $submissaoRepository;
+    public function __construct(protected SubmissaoRepository $submissaoRepository) {}
 
-    /**
-     * Create a new controller instance.
-     */
-    public function __construct(SubmisssaoRepository $submissaoRepository)
-    {
-        $this->submissaoRepository = $submissaoRepository;
-    }
-
-    /**
-     * Get the middleware the controller uses.
-     */
-    public static function middleware()
+    public static function middleware(): array
     {
         return [
-            new Middleware('permission:view_submissoes', ['only' => ['index', 'show']]),
-            new Middleware('permission:create_submissoes', ['only' => ['create', 'store']]),
-            new Middleware('permission:edit_submissoes', ['only' => ['edit', 'update']]),
-            new Middleware('permission:delete_submissoes', ['only' => ['destroy']]),
+            new Middleware('permission:view_submissoes', only: ['index', 'show']),
+            new Middleware('permission:edit_submissoes', only: ['edit', 'update']),
+            new Middleware('permission:delete_submissoes', only: ['destroy']),
+            new Middleware('permission:restore_submissoes', only: ['restore']),
+            new Middleware('permission:force_delete_submissoes', only: ['forceDelete']),
         ];
     }
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $this->submissaoRepository->all();
-    
+        $submissions = $this->submissaoRepository->all($request);
+        $statuses = SubmissaoStatus::cases();
+        $curators = $this->submissaoRepository->curators();
+
+        return view('submissions.index', compact('submissions', 'statuses', 'curators'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function show(string $id)
     {
-        //
-       return view('submissao.create');
+        $submission = $this->submissaoRepository->find((int) $id);
+
+        return view('submissions.show', compact('submission'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreSubmissaoRequest $request)
+    public function edit(string $id)
     {
-        //
+        $submission = $this->submissaoRepository->find((int) $id);
+        abort_if($submission->trashed(), 404);
+        $statuses = SubmissaoStatus::cases();
+        $curators = $this->submissaoRepository->curators();
 
+        return view('submissions.edit', compact('submission', 'statuses', 'curators'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Submissao $submissao)
+    public function update(UpdateSubmissaoRequest $request, string $id)
     {
-        //
+        $this->submissaoRepository->update((int) $id, $request->validated());
+
+        return redirect()->route('submissions.index')->with('status', 'Fluxo da submissão atualizado com sucesso.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Submissao $submissao)
+    public function destroy(string $id)
     {
-        //
+        $this->submissaoRepository->delete((int) $id);
+
+        return redirect()->route('submissions.index')->with('status', 'Submissão enviada para a lixeira.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateSubmissaoRequest $request, Submissao $submissao)
+    public function restore(string $id)
     {
-        //
+        $this->submissaoRepository->restore((int) $id);
+
+        return redirect()->route('submissions.index', ['trash' => 'trashed'])->with('status', 'Submissão restaurada com sucesso.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Submissao $submissao)
+    public function forceDelete(string $id)
     {
-        //
+        $this->submissaoRepository->forceDelete((int) $id);
+
+        return redirect()->route('submissions.index', ['trash' => 'trashed'])->with('status', 'Submissão excluída definitivamente.');
     }
 }

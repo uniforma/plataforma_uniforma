@@ -3,25 +3,76 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\Submissao;
+use App\Models\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
-class SubmisssaoRepository extends BaseRepository
+class SubmissaoRepository extends BaseRepository
 {
-    /**
-     * @var Submissao
-     */
-    protected $model;
-
     public function __construct(Submissao $model)
     {
-        $this->model = $model;
+        parent::__construct($model);
     }
-    public function create(array $data)
+
+    public function all($request = null, $perPage = 15): LengthAwarePaginator
     {
-        $this->model->create($data);
+        $query = $this->model->newQuery()
+            ->with(['autor', 'curador'])
+            ->withCount(['votes', 'teachingInterests']);
+        $trash = $request?->input('trash', 'active') ?? 'active';
+
+        if ($trash === 'trashed') {
+            $query->onlyTrashed();
+        } elseif ($trash === 'all') {
+            $query->withTrashed();
+        }
+
+        $perPage = min((int) ($request?->input('per_page', $perPage) ?? $perPage), 100);
+
+        return $query->applyQueryFilters($request)->paginate(max($perPage, 1))->withQueryString();
     }
-    public function getName()
+
+    public function find(int $id): Submissao
     {
-        // Busca as submissões e já traz os dados do autor de cada uma
-        $this->model->Submissao::with('autor')->get();
+        return $this->model->newQuery()
+            ->withTrashed()
+            ->with(['autor.roles', 'curador.roles', 'teachingInterests.user.roles'])
+            ->withCount(['votes', 'teachingInterests'])
+            ->findOrFail($id);
+    }
+
+    public function update(int $id, array $data): Submissao
+    {
+        $submissao = $this->find($id);
+        $submissao->update($data);
+
+        return $submissao;
+    }
+
+    public function delete(int $id): bool
+    {
+        return (bool) $this->find($id)->delete();
+    }
+
+    public function restore(int $id): bool
+    {
+        $submissao = $this->model->newQuery()->onlyTrashed()->findOrFail($id);
+
+        return (bool) $submissao->restore();
+    }
+
+    public function forceDelete(int $id): bool
+    {
+        $submissao = $this->model->newQuery()->onlyTrashed()->findOrFail($id);
+
+        return (bool) $submissao->forceDelete();
+    }
+
+    public function curators(): Collection
+    {
+        return User::query()
+            ->whereHas('roles', fn ($query) => $query->where('guard_name', 'admin'))
+            ->orderBy('name')
+            ->get(['id', 'name', 'email']);
     }
 }
