@@ -12,7 +12,23 @@ class TeachingInterest extends Model
 {
     use HasFactory, SoftDeletes, LogsActivity;
 
-    protected $fillable = ['submissao_id', 'user_id'];
+    protected $fillable = [
+        'submissao_id',
+        'user_id',
+        'carga_horaria',
+        'dias_semana',
+        'horarios',
+        'recursos',
+        'modalidade',
+    ];
+    protected function casts(): array
+    {
+        return [
+            'dias_semana' => 'array',
+            'horarios' => 'array',
+            'carga_horaria' => 'integer',
+        ];
+    }
 
     public function submissao()
     {
