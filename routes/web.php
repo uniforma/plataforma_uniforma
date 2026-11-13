@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserSubmissionController;
 use App\Http\Requests\UpdateUserSubmissionRequest;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PropostaMinistracaoController;
 
 require __DIR__.'/auth.php';
 
@@ -36,6 +37,8 @@ Route::group(['middleware' => ['auth:user'], 'prefix' => 'user'], function () {
     Route::delete('/submissions/{submission}/teaching-interest', [DemandController::class, 'removeTeachingInterest'])->name('user.submissions.teaching-interest.destroy');
 
 
+    Route::get('/submissions/{submission}/proposta', [PropostaMinistracaoController::class, 'create'])->name('user.propostas.create');
+    Route::post('/submissions/{submission}/proposta', [PropostaMinistracaoController::class, 'store'])->name('user.propostas.store');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('user.profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('user.profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('user.profile.destroy');
