@@ -22,9 +22,9 @@
                     <div class="space-y-4">
                         <div>
                             <h4
-                                class="text-sm font-medium tracking-wide text-gray-600 dark:text-white transition-colors">
+                                class="text-sm font-medium tracking-wide text-gray-600  transition-colors">
                                 Permissões</h4>
-                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">As permissões definem o que esse
+                            <p class="mt-1 text-sm text-gray-500 ">As permissões definem o que esse
                                 cargo pode ver e executar.</p>
                         </div>
 

@@ -42,11 +42,11 @@
 
                     <div class="space-y-4">
                         <div>
-                            <h3 class="text-sm font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-200">Roles</h3>
-                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Atualize as roles deste administrador.</p>
+                            <h3 class="text-sm font-semibold uppercase tracking-wide text-gray-700 ">Roles</h3>
+                            <p class="mt-1 text-sm text-gray-500 ">Atualize as roles deste administrador.</p>
                                                 @if($errors->has('roles'))
-                                                    <div class="rounded-lg border border-red-300 bg-red-50 p-3 dark:border-red-900/50 dark:bg-red-900/20">
-                                                        <p class="text-sm font-medium text-red-800 dark:text-red-200">{{ $errors->first('roles') }}</p>
+                                                    <div class="rounded-lg border border-red-300 bg-red-50 p-3  ">
+                                                        <p class="text-sm font-medium text-red-800 ">{{ $errors->first('roles') }}</p>
                                                     </div>
                                                 @endif
 

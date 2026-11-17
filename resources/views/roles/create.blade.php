@@ -14,8 +14,8 @@
             <x-card>
                 <x-slot name="header">
                     <div>
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Informações do cargo</h3>
-                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Escolha um nome claro e selecione exatamente o conjunto de acessos necessários.</p>
+                        <h3 class="text-lg font-semibold text-gray-900 ">Informações do cargo</h3>
+                        <p class="mt-1 text-sm text-gray-500 ">Escolha um nome claro e selecione exatamente o conjunto de acessos necessários.</p>
                     </div>
                 </x-slot>
 
@@ -33,8 +33,8 @@
 
                     <div class="space-y-4">
                         <div>
-                            <h4 class="text-sm font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-200">Permissões</h4>
-                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Marque os acessos que este cargo poderá usar no sistema.</p>
+                            <h4 class="text-sm font-semibold uppercase tracking-wide text-gray-700 ">Permissões</h4>
+                            <p class="mt-1 text-sm text-gray-500 ">Marque os acessos que este cargo poderá usar no sistema.</p>
                         </div>
 
                         <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">

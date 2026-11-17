@@ -14,14 +14,14 @@
             </form>
         </div>
 
-        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="bg-white  overflow-hidden shadow-sm sm:rounded-lg">
             <x-table>
                 <x-table.head>
                     <x-table.th>ID</x-table.th>
                     <x-table.th>Nome</x-table.th>
                     <x-table.th class="text-right">Ações</x-table.th>
                 </x-table.head>
-                
+
                 <x-table.body>
                     @forelse($roles as $role)
                         <x-table.row>
@@ -43,7 +43,7 @@
                         </x-table.row>
                     @empty
                         <x-table.row>
-                            <x-table.td colspan="3" class="text-center py-4 text-gray-500 dark:text-gray-400">
+                            <x-table.td colspan="3" class="text-center py-4 text-gray-500 ">
                                 Nenhum cargo encontrado.
                             </x-table.td>
                         </x-table.row>

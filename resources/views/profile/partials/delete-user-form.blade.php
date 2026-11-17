@@ -1,11 +1,11 @@
 <x-card>
 <section class="space-y-6">
     <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+        <h2 class="text-lg font-medium text-gray-900 ">
             {{ __('Delete Account') }}
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+        <p class="mt-1 text-sm text-gray-600 ">
             Ao excluir sua conta, seu acesso será desativado. Um administrador ainda poderá restaurá-la antes de uma exclusão definitiva.
         </p>
     </header>
@@ -21,22 +21,22 @@
             @csrf
             @method('delete')
 
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+            <h2 class="text-lg font-medium text-gray-900 ">
                 {{ __('Are you sure you want to delete your account?') }}
             </h2>
 
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            <p class="mt-1 text-sm text-gray-600 ">
                 Sua conta será desativada. Informe sua senha para confirmar.
             </p>
 
             <div class="mt-6">
-                <x-input 
+                <x-input
                     id="password"
-                    name="password" 
-                    label="{{ __('Password') }}" 
-                    type="password" 
+                    name="password"
+                    label="{{ __('Password') }}"
+                    type="password"
                     placeholder="{{ __('Password') }}"
-                    :messages="$errors->userDeletion->get('password')" 
+                    :messages="$errors->userDeletion->get('password')"
                 />
             </div>
 

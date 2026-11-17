@@ -99,6 +99,6 @@ class UserController extends Controller implements HasMiddleware
 
     private function roles()
     {
-        return Role::query()->where('guard_name', 'user')->orderBy('name')->get();
+        return Role::query()->where('guard_name', 'user')->whereIn('name', ['aluno', 'servidor'])->orderBy('name')->get();
     }
 }
