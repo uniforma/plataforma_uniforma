@@ -1,8 +1,58 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 
+:root { color-scheme: light; }
+
 [x-cloak] {
     display: none !important;
+}
+
+html {
+    overflow-x: clip;
+}
+
+img, svg, video, canvas {
+    max-width: 100%;
+}
+
+@media (max-width: 639px) {
+    main, article, section, form {
+        min-width: 0;
+    }
+}
+
+html[data-contrast='high'] body,
+html[data-contrast='high'] body :is(header, footer, main, section, article, aside, nav, details, summary, [class*='bg-']) {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+
+html[data-contrast='high'] body :is(h1, h2, h3, h4, p, span, small, strong, dt, dd, label, li, i) {
+    color: #fff !important;
+}
+
+html[data-contrast='high'] body :is(a, a span) {
+    color: #ffeb00 !important;
+    text-decoration: underline;
+}
+
+html[data-contrast='high'] body :is(button, input, textarea, select, option) {
+    background-color: #000 !important;
+    border-color: #fff !important;
+    color: #fff !important;
+}
+
+html[data-contrast='high'] body :is(input, textarea)::placeholder {
+    color: #ddd !important;
+}
+
+html[data-contrast='high'] body :is(a, button, input, textarea, select, summary):focus-visible {
+    outline: 3px solid #ffeb00 !important;
+    outline-offset: 3px;
+}
+
+html[data-contrast='high'] body :is(article, details, input, textarea, select) {
+    border-color: #fff !important;
 }
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -16,13 +66,15 @@
 
     --font-inter: "Inter", sans-serif;
 
-    --color-primary-400: #7768e5;
-    --color-primary-500: #674df0;
-    --color-primary-600: #573de0;
+    --color-primary-50: #f2efff;
+    --color-primary-100: #e6dfff;
+    --color-primary-400: #846cf0;
+    --color-primary-500: #7059e6;
+    --color-primary-600: #5c46d1;
 
-    --color-secondary-400: #3ff1bb;
+    --color-secondary-400: #48dfb8;
     --color-secondary-500: #2fc7a1;
-    --color-secondary-600: #1eb791;
+    --color-secondary-600: #1da989;
 
     --color-surface-800: #333931;
     --color-surface-900: #1f2321;

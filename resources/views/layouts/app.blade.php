@@ -17,17 +17,17 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased bg-[#0B0B0B] text-gray-100">
+<body class="font-sans antialiased bg-[#f5f7fc] text-slate-900">
     <div
         x-data="{ sidebarCollapsed: JSON.parse(localStorage.getItem('uniforma.sidebarCollapsed') ?? 'false') }"
         @sidebar-toggled.window="sidebarCollapsed = $event.detail.collapsed; localStorage.setItem('uniforma.sidebarCollapsed', JSON.stringify(sidebarCollapsed))"
-        class="min-h-screen bg-gray-100 dark:bg-surface-950 flex"
+        class="min-h-screen bg-gray-100  flex"
     >
         <x-sidebar />
 
         <div class="flex-1 overflow-y-auto transition-all duration-300 md:px-4"
              :class="sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-[280px]'">
-             
+
             @include('layouts.navigation')
 
             <main class="overflow-y-auto pt-4">
