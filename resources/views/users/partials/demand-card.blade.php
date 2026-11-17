@@ -38,6 +38,7 @@
                 <span class="cursor-not-allowed rounded-lg bg-slate-200 px-4 py-2 text-sm font-semibold text-slate-500" title="Interações encerradas">Apoiar Demanda</span>
                 <span class="cursor-not-allowed rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-400" title="Interações encerradas">Quero Ministrar</span>
             @endif
+
         @elseif ($viewer)
             @if ($isOpen && ! $isAuthor)
                 <form method="POST" action="{{ $supported ? route('user.submissions.support.destroy', $demand->id) : route('user.submissions.support', $demand->id) }}">
@@ -52,16 +53,29 @@
             @endif
 
             @if ($isOpen && ($canTeach || $interested))
-                <form method="POST" action="{{ $interested ? route('user.submissions.teaching-interest.destroy', $demand->id) : route('user.submissions.teaching-interest', $demand->id) }}">
-                    @csrf
-                    @if ($interested) @method('DELETE') @endif
-                    <button class="rounded-lg border border-[#0040A1] px-4 py-2 text-sm font-semibold text-[#0040A1] transition hover:bg-blue-50">
-                        {{ $interested ? 'Retirar Interesse' : 'Quero Ministrar' }}
-                    </button>
-                </form>
+                @if ($interested)
+                    <form method="POST"
+                          action="{{ route('user.submissions.teaching-interest.destroy', $demand->id) }}">
+                        @csrf
+                        @method('DELETE')
+
+                        <button class="rounded-lg border border-[#0040A1] px-4 py-2 text-sm font-semibold text-[#0040A1] transition hover:bg-blue-50">
+                            Retirar Interesse
+                        </button>
+                    </form>
+                @else
+                    <a href="{{ route('user.propostas.create', $demand->id) }}"
+                       class="rounded-lg border border-[#0040A1] px-4 py-2 text-sm font-semibold text-[#0040A1] transition hover:bg-blue-50">
+                        Quero Ministrar
+                    </a>
+                @endif
             @else
-                <span class="cursor-not-allowed rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-400" title="{{ $isOpen ? 'Disponível para docentes e técnicos' : 'Interações encerradas' }}">Quero Ministrar</span>
+                <span class="cursor-not-allowed rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-400"
+                      title="{{ $isOpen ? 'Disponível para docentes e técnicos' : 'Interações encerradas' }}">
+                    Quero Ministrar
+                </span>
             @endif
+
         @else
             <span class="cursor-not-allowed rounded-lg bg-slate-200 px-4 py-2 text-sm font-semibold text-slate-500" title="Disponível para usuários comuns">Apoiar Demanda</span>
             <span class="cursor-not-allowed rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-400" title="Disponível para usuários comuns">Quero Ministrar</span>
