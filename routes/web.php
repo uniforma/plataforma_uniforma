@@ -1,15 +1,18 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\DemandController;
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\OfferController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProposalReviewController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SubmissaoController;
+use App\Http\Controllers\TeachingProposalController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserSubmissionController;
-use App\Http\Requests\UpdateUserSubmissionRequest;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PropostaMinistracaoController;
 
@@ -17,25 +20,31 @@ require __DIR__.'/auth.php';
 
 Route::get('/', [DemandController::class, 'index'])->name('home');
 Route::get('/submissoes/{submissao}', [DemandController::class, 'show'])->name('demands.show');
+Route::get('/ofertas', [OfferController::class, 'index'])->name('offers.index');
+Route::get('/ofertas/{submissao}', [OfferController::class, 'show'])->name('offers.show');
+Route::view('/sobre', 'users.about')->name('about');
+Route::view('/perguntas-frequentes', 'users.faq')->name('faq');
 Route::redirect('/user/vitrineSub', '/')->name('user.vitrine');
 
 Route::group(['middleware' => ['auth:user'], 'prefix' => 'user'], function () {
+    Route::get('/submissions/{submissao}/proposals/create', [TeachingProposalController::class, 'create'])->name('user.proposals.create');
+    Route::post('/submissions/{submissao}/proposals', [TeachingProposalController::class, 'store'])->name('user.proposals.store');
+    Route::get('/proposals/{proposal}/edit', [TeachingProposalController::class, 'edit'])->name('user.proposals.edit');
+    Route::put('/proposals/{proposal}', [TeachingProposalController::class, 'update'])->name('user.proposals.update');
+    Route::post('/offers/{submissao}/registrations', [OfferController::class, 'store'])->name('user.registrations.store');
     Route::get('/submissions', [DemandController::class, 'mine'])->name('user.submissions.index');
     Route::get('/submissions/create', [DemandController::class, 'create'])->name('user.submissions.create');
-
 
     Route::get('/submissions/submission-panel', [DemandController::class, 'showSub'])->name('user.submissions.showSub');
     Route::get('/submissions/{submission}/edit', [UserSubmissionController::class, 'edit'])->name('user.submissions.edit');
     Route::delete('/submissions/{submission}/destroy', [UserSubmissionController::class, 'destroy'])->name('user.submissions.destroy');
     Route::put('/submissions/{submission}', [UserSubmissionController::class, 'update'])->name('user.submissions.update');
 
-
     Route::post('/submissions/create', [DemandController::class, 'store'])->name('user.submissions.store');
     Route::post('/submissions/{submission}/support', [DemandController::class, 'support'])->name('user.submissions.support');
     Route::delete('/submissions/{submission}/support', [DemandController::class, 'removeSupport'])->name('user.submissions.support.destroy');
     Route::post('/submissions/{submission}/teaching-interest', [DemandController::class, 'teachingInterest'])->name('user.submissions.teaching-interest');
     Route::delete('/submissions/{submission}/teaching-interest', [DemandController::class, 'removeTeachingInterest'])->name('user.submissions.teaching-interest.destroy');
-
 
     Route::get('/submissions/{submission}/proposta', [PropostaMinistracaoController::class, 'create'])->name('user.propostas.create');
     Route::post('/submissions/{submission}/proposta', [PropostaMinistracaoController::class, 'store'])->name('user.propostas.store');
@@ -45,9 +54,9 @@ Route::group(['middleware' => ['auth:user'], 'prefix' => 'user'], function () {
 });
 
 Route::group(['middleware' => ['auth:admin'], 'prefix' => 'admin'], function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard.admin');
-    })->name('admin.dashboard');
+    Route::get('/proposals', [ProposalReviewController::class, 'index'])->name('admin.proposals.index');
+    Route::patch('/proposals/{proposal}', [ProposalReviewController::class, 'update'])->name('admin.proposals.update');
+    Route::get('/dashboard', AdminDashboardController::class)->name('admin.dashboard');
 
     Route::resource('admins', AdminController::class);
 
