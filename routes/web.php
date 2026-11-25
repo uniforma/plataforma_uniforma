@@ -12,14 +12,19 @@ use App\Http\Controllers\UserSubmissionController;
 use App\Http\Requests\UpdateUserSubmissionRequest;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PropostaMinistracaoController;
+use App\Http\Controllers\ProposalReviewController;
+use App\Http\Controllers\OfferController;
 
 require __DIR__.'/auth.php';
 
 Route::get('/', [DemandController::class, 'index'])->name('home');
 Route::get('/submissoes/{submissao}', [DemandController::class, 'show'])->name('demands.show');
+Route::get('/ofertas', [OfferController::class, 'index'])->name('offers.index');
+Route::get('/ofertas/{submissao}', [OfferController::class, 'show'])->name('offers.show');
 Route::redirect('/user/vitrineSub', '/')->name('user.vitrine');
 
 Route::group(['middleware' => ['auth:user'], 'prefix' => 'user'], function () {
+    Route::post('/offers/{submissao}/registrations', [OfferController::class, 'store'])->name('user.registrations.store');
     Route::get('/submissions', [DemandController::class, 'mine'])->name('user.submissions.index');
     Route::get('/submissions/create', [DemandController::class, 'create'])->name('user.submissions.create');
 
@@ -68,4 +73,10 @@ Route::group(['middleware' => ['auth:admin'], 'prefix' => 'admin'], function () 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('admin.profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('admin.profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('admin.profile.destroy');
+
+    Route::get('/proposals', [ProposalReviewController::class, 'index'])
+        ->name('admin.proposals.index');
+
+    Route::patch('/proposals/{proposal}', [ProposalReviewController::class, 'update'])
+        ->name('admin.proposals.update');
 });
