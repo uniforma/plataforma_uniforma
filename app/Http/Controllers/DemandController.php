@@ -20,7 +20,7 @@ class DemandController extends Controller
         $metrics = $this->demandRepository->metrics();
         $voteDemands = $this->demandRepository->getMoreVoted($userId);
         $recentDemands = $this->demandRepository->getMoreRecent($userId);
-  
+
 
         return view('users.vitrine-submissao', compact('metrics', 'voteDemands', 'recentDemands'));
     }
@@ -92,7 +92,7 @@ class DemandController extends Controller
         $user = auth('user')->user();
 
         abort_unless($demand->status->allowsInteractions(), 403, 'Esta demanda não aceita mais interessados.');
-        abort_unless($user->roles()->whereIn('name', ['docente', 'tecnico'])->exists(), 403, 'Seu perfil não pode ministrar demandas.');
+        abort_unless($user->roles()->whereIn('name', ['docente', 'tecnico', 'servidor'])->exists(), 403, 'Seu perfil não pode ministrar demandas.');
 
         $interest = TeachingInterest::withTrashed()->firstOrCreate([
             'submissao_id' => $demand->id,

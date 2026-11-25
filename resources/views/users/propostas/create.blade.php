@@ -1,4 +1,3 @@
-
 <x-app-layout>
     <div class="max-w-3xl mx-auto py-10 px-4">
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
@@ -28,12 +27,14 @@
                 id="form-proposta"
                 method="POST"
                 action="{{ route('user.propostas.store', $demanda->id) }}"
+                class="text-slate-800"
             >
                 @csrf
 
                 <!-- Carga horária -->
                 <div class="mb-6">
-                    <label for="carga_horaria" class="block font-semibold mb-2">
+                    <label for="carga_horaria"
+                           class="block font-semibold text-slate-800 mb-2">
                         Carga horária total
                     </label>
 
@@ -44,7 +45,7 @@
                         value="{{ old('carga_horaria') }}"
                         min="1"
                         required
-                        class="w-full rounded-lg border-slate-300"
+                        class="w-full rounded-lg border border-slate-300 bg-white text-slate-900 placeholder-slate-400 focus:border-blue-600 focus:ring-blue-600"
                         placeholder="Ex.: 20"
                     >
                 </div>
@@ -63,7 +64,7 @@
 
                 <!-- Dias da semana -->
                 <div class="mb-6">
-                    <label class="block font-semibold mb-3">
+                    <label class="block font-semibold text-slate-800 mb-3">
                         Dias da semana disponíveis
                     </label>
 
@@ -76,10 +77,11 @@
                                 id="dia-{{ $valor }}"
                                 onchange="atualizarHorarios()"
                                 @checked(in_array($valor, old('dias_semana', [])))
-                                class="rounded border-slate-300"
+                                class="rounded border-slate-400 bg-white text-blue-700 focus:ring-blue-600"
                             >
 
-                            <label for="dia-{{ $valor }}">
+                            <label for="dia-{{ $valor }}"
+                                   class="text-slate-800">
                                 {{ $nome }}
                             </label>
                         </div>
@@ -88,22 +90,22 @@
 
                 <!-- Horários -->
                 <div class="mb-6">
-                    <h2 class="font-semibold mb-3">
+                    <h2 class="font-semibold text-slate-800 mb-3">
                         Horários disponíveis
                     </h2>
 
                     @foreach ($dias as $valor => $nome)
                         <div
                             id="horario-{{ $valor }}"
-                            class="horario-dia hidden mb-4 rounded-lg bg-slate-50 p-4"
+                            class="horario-dia hidden mb-4 rounded-lg bg-slate-50 border border-slate-200 p-4"
                         >
-                            <p class="font-medium mb-2">
+                            <p class="font-medium text-slate-800 mb-2">
                                 {{ $nome }}
                             </p>
 
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block mb-1">
+                                    <label class="block mb-1 text-slate-700">
                                         Início
                                     </label>
 
@@ -111,13 +113,13 @@
                                         type="time"
                                         name="horarios[{{ $valor }}][inicio]"
                                         value="{{ old('horarios.' . $valor . '.inicio') }}"
-                                        class="w-full rounded-lg border-slate-300"
+                                        class="w-full rounded-lg border border-slate-300 bg-white text-slate-900 focus:border-blue-600 focus:ring-blue-600"
                                         disabled
                                     >
                                 </div>
 
                                 <div>
-                                    <label class="block mb-1">
+                                    <label class="block mb-1 text-slate-700">
                                         Fim
                                     </label>
 
@@ -125,7 +127,7 @@
                                         type="time"
                                         name="horarios[{{ $valor }}][fim]"
                                         value="{{ old('horarios.' . $valor . '.fim') }}"
-                                        class="w-full rounded-lg border-slate-300"
+                                        class="w-full rounded-lg border border-slate-300 bg-white text-slate-900 focus:border-blue-600 focus:ring-blue-600"
                                         disabled
                                     >
                                 </div>
@@ -136,7 +138,8 @@
 
                 <!-- Recursos -->
                 <div class="mb-6">
-                    <label for="recursos" class="block font-semibold mb-2">
+                    <label for="recursos"
+                           class="block font-semibold text-slate-800 mb-2">
                         Recursos necessários
                     </label>
 
@@ -144,14 +147,15 @@
                         id="recursos"
                         name="recursos"
                         rows="4"
-                        class="w-full rounded-lg border-slate-300"
+                        class="w-full rounded-lg border border-slate-300 bg-white text-slate-900 placeholder-slate-400 focus:border-blue-600 focus:ring-blue-600"
                         placeholder="Ex.: projetor, computadores, internet..."
                     >{{ old('recursos') }}</textarea>
                 </div>
 
                 <!-- Modalidade -->
                 <div class="mb-6">
-                    <label for="modalidade" class="block font-semibold mb-2">
+                    <label for="modalidade"
+                           class="block font-semibold text-slate-800 mb-2">
                         Modalidade
                     </label>
 
@@ -159,7 +163,7 @@
                         id="modalidade"
                         name="modalidade"
                         required
-                        class="w-full rounded-lg border-slate-300"
+                        class="w-full rounded-lg border border-slate-300 bg-white text-slate-900 focus:border-blue-600 focus:ring-blue-600"
                     >
                         <option value="">Selecione</option>
                         <option value="EAD" @selected(old('modalidade') === 'EAD')>
@@ -174,10 +178,11 @@
                     </select>
                 </div>
 
+                <!-- Botões -->
                 <div class="flex justify-end gap-3">
                     <a
                         href="{{ route('demands.show', $demanda->id) }}"
-                        class="rounded-lg border border-slate-300 px-5 py-3"
+                        class="rounded-lg border border-slate-300 bg-white px-5 py-3 text-slate-700 hover:bg-slate-100 transition"
                     >
                         Cancelar
                     </a>

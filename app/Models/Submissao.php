@@ -41,6 +41,19 @@ class Submissao extends Model
         return $this->hasMany(TeachingInterest::class);
     }
 
+    public function approvedProposal()
+    {
+        return $this->hasOne(TeachingInterest::class)
+            ->where('status', 'approved');
+    }
+
+    public function scopeOffered($query)
+    {
+        return $query
+            ->where('status', SubmissaoStatus::Oficializado->value)
+            ->whereHas('approvedProposal');
+    }
+
     public function autor()
     {
         return $this->belongsTo(User::class, 'autor_id')->withTrashed();

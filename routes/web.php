@@ -10,7 +10,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProposalReviewController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SubmissaoController;
-use App\Http\Controllers\TeachingProposalController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserSubmissionController;
 use Illuminate\Support\Facades\Route;
@@ -27,10 +26,6 @@ Route::view('/perguntas-frequentes', 'users.faq')->name('faq');
 Route::redirect('/user/vitrineSub', '/')->name('user.vitrine');
 
 Route::group(['middleware' => ['auth:user'], 'prefix' => 'user'], function () {
-    Route::get('/submissions/{submissao}/proposals/create', [TeachingProposalController::class, 'create'])->name('user.proposals.create');
-    Route::post('/submissions/{submissao}/proposals', [TeachingProposalController::class, 'store'])->name('user.proposals.store');
-    Route::get('/proposals/{proposal}/edit', [TeachingProposalController::class, 'edit'])->name('user.proposals.edit');
-    Route::put('/proposals/{proposal}', [TeachingProposalController::class, 'update'])->name('user.proposals.update');
     Route::post('/offers/{submissao}/registrations', [OfferController::class, 'store'])->name('user.registrations.store');
     Route::get('/submissions', [DemandController::class, 'mine'])->name('user.submissions.index');
     Route::get('/submissions/create', [DemandController::class, 'create'])->name('user.submissions.create');

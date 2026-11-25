@@ -12,6 +12,18 @@ class TeachingInterest extends Model
 {
     use HasFactory, SoftDeletes, LogsActivity;
 
+    public const TYPES = [
+        'curso' => 'Curso',
+        'oficina' => 'Oficina',
+        'palestra' => 'Palestra',
+        'monitoria' => 'Monitoria',
+    ];
+
+    public function scopeProposals($query)
+    {
+        return $query->whereNotNull('carga_horaria');
+    }
+
     protected $fillable = [
         'submissao_id',
         'user_id',

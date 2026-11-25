@@ -6,7 +6,6 @@ use App\Enums\SubmissaoStatus;
 use App\Models\Registration;
 use App\Models\Submissao;
 use App\Models\TeachingInterest;
-use App\Models\TeachingProposal;
 use App\Models\User;
 use App\Models\VoteSubmission;
 use Illuminate\Support\Carbon;
@@ -26,7 +25,7 @@ class AdminDashboardController extends Controller
             'rejected' => 'Recusadas',
         ])->map(fn ($label, $status) => [
             'label' => $label,
-            'count' => TeachingProposal::where('status', $status)->count(),
+            'count' => TeachingInterest::proposals()->where('status', $status)->count(),
         ])->values();
 
         $months = collect(range(5, 0))->map(function (int $offset) {
@@ -50,14 +49,14 @@ class AdminDashboardController extends Controller
             'interestsCount' => TeachingInterest::count(),
             'votesCount' => VoteSubmission::count(),
             'registrationsCount' => Registration::count(),
-            'pendingProposalsCount' => TeachingProposal::where('status', 'pending')->whereHas('submissao', fn ($query) => $query->where('status', '!=', SubmissaoStatus::EmVotacao->value))->count(),
-            'approvedProposalsCount' => TeachingProposal::where('status', 'approved')->count(),
+            'pendingProposalsCount' => TeachingInterest::proposals()->where('status', 'pending')->whereHas('submissao', fn ($query) => $query->where('status', '!=', SubmissaoStatus::EmVotacao->value))->count(),
+            'approvedProposalsCount' => TeachingInterest::proposals()->where('status', 'approved')->count(),
             'readySubmissionsCount' => Submissao::where('status', SubmissaoStatus::AltaRelevancia->value)->count(),
             'statusCounts' => $statusCounts,
             'proposalCounts' => $proposalCounts,
             'months' => $months,
             'topFields' => $topFields,
-            'pendingProposals' => TeachingProposal::query()->with(['user', 'submissao'])
+            'pendingProposals' => TeachingInterest::proposals()->with(['user', 'submissao'])
                 ->where('status', 'pending')
                 ->whereHas('submissao', fn ($query) => $query->whereIn('status', [SubmissaoStatus::AltaRelevancia->value, SubmissaoStatus::EmCuradoria->value, SubmissaoStatus::Oficializado->value]))
                 ->oldest()->limit(4)->get(),
