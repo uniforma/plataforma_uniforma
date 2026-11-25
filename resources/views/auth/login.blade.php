@@ -1,8 +1,9 @@
 <x-guest-layout>
+    <div class="mb-7"><p class="text-xs font-bold uppercase tracking-widest text-primary-500">Bem-vindo de volta</p><h1 class="mt-2 text-3xl font-bold text-slate-950">Entre na UniForma</h1><p class="mt-2 text-sm text-slate-600">Acesse sua conta e continue participando.</p></div>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('login') }}" class="space-y-3">
+    <form method="POST" action="{{ route('login') }}" class="space-y-5">
         @csrf
 
         <!-- Email Address -->
@@ -14,7 +15,7 @@
             :messages="$errors->get('password')" />
 
         @if (Route::has('password.request'))
-            <a class="hover:underline text-xs pl-1 text-gray-600 hover:text-gray-900 dark:text-white dark:hover:text-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            <a class="hover:underline text-xs pl-1 text-gray-600 hover:text-gray-900   rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 href="{{ route('password.request') }}">
                 {{ __('Forgot your password?') }}
             </a>

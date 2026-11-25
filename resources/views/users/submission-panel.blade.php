@@ -320,10 +320,10 @@
             $adminViewer = auth('admin')->user();
             $isOpen = $demand->status->allowsInteractions();
             $isAuthor = $viewer && $demand->autor_id === $viewer->id;
-            
-           
-            $canTeach = $viewer?->roles->contains(fn ($role) => in_array($role->name, ['docente', 'tecnico'], true)) ?? false;
-            
+
+
+            $canTeach = $viewer?->roles->contains(fn ($role) => in_array($role->name, ['docente', 'tecnico', 'servidor'], true)) ?? false;
+
             $supported = (bool) ($demand->supported_by_current_user ?? false);
             $interested = (bool) ($demand->teaching_interest_by_current_user ?? false);
         @endphp
@@ -461,13 +461,13 @@
 
     @elseif ($viewer)
         {{-- USUÁRIOS COMUNS LOGADOS: Formulários POST/DELETE reais --}}
-        
+
         {{-- 1. Botão de Apoiar --}}
         @if ($isOpen && ! $isAuthor)
             <form method="POST" action="{{ $supported ? route('user.submissions.support.destroy', ['submission' => $demand->id]) : route('user.submissions.support', ['submission' => $demand->id]) }}">
                 @csrf
                 @if ($supported) @method('DELETE') @endif
-                
+
                 <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0040A1] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-900 active:scale-[0.98]">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2" />
@@ -484,7 +484,7 @@
             <form method="POST" action="{{ $interested ? route('user.submissions.teaching-interest.destroy', ['submission' => $demand->id]) : route('user.submissions.teaching-interest', ['submission' => $demand->id]) }}">
                 @csrf
                 @if ($interested) @method('DELETE') @endif
-                
+
                 <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 active:scale-[0.98]">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />

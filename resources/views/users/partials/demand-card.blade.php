@@ -3,7 +3,7 @@
     $adminViewer = auth('admin')->user();
     $isOpen = $demand->status->allowsInteractions();
     $isAuthor = $viewer && $demand->autor_id === $viewer->id;
-    $canTeach = $viewer?->roles->contains(fn ($role) => in_array($role->name, ['docente', 'tecnico'], true)) ?? false;
+    $canTeach = $viewer?->roles->contains(fn ($role) => in_array($role->name, ['docente', 'tecnico', 'servidor'], true)) ?? false;
     $supported = (bool) ($demand->supported_by_current_user ?? false);
     $interested = (bool) ($demand->teaching_interest_by_current_user ?? false);
     $loginReturn = route('demands.show', $demand->id, absolute: false);

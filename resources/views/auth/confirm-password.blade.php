@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+    <div class="mb-4 text-sm text-gray-600 ">
         {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
     </div>
 
@@ -8,13 +8,13 @@
 
         <!-- Password -->
         <div>
-            <x-input 
-                name="password" 
-                label="{{ __('Password') }}" 
-                type="password" 
-                required 
-                autocomplete="current-password" 
-                :messages="$errors->get('password')" 
+            <x-input
+                name="password"
+                label="{{ __('Password') }}"
+                type="password"
+                required
+                autocomplete="current-password"
+                :messages="$errors->get('password')"
             />
         </div>
 

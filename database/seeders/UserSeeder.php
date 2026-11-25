@@ -26,9 +26,9 @@ class UserSeeder extends Seeder
 
         $adminRole = Role::where('name', 'admin')->first();
         $userRoles = Role::where('guard_name', 'user')->get();
-        $discenteRole = $userRoles->firstWhere('name', 'discente');
+        $alunoRole = $userRoles->firstWhere('name', 'aluno');
         $user->assignRole($adminRole);
-        $userTest->assignRole($discenteRole);
+        $userTest->assignRole($alunoRole);
 
         User::factory(30)->create()->each(function ($user) use ($userRoles) {
             $user->assignRole($userRoles->random());

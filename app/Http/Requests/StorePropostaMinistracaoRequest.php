@@ -15,7 +15,7 @@ class StorePropostaMinistracaoRequest extends FormRequest
 
         return $user !== null
             && $user->roles()
-                ->whereIn('name', ['docente', 'tecnico'])
+                ->whereIn('name', ['docente', 'tecnico', 'servidor'])
                 ->exists();
     }
 

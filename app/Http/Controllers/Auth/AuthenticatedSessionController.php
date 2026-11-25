@@ -100,6 +100,6 @@ class AuthenticatedSessionController extends Controller
 
         return $guard === 'admin'
             ? str_starts_with($path, '/admin/')
-            : str_starts_with($path, '/user/') || str_starts_with($path, '/submissoes/');
+            : str_starts_with($path, '/user/') || str_starts_with($path, '/submissoes/') || str_starts_with($path, '/ofertas/');
     }
 }

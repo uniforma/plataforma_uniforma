@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 
@@ -39,6 +38,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'force_delete_roles', 'guard_name' => 'admin', 'description' => 'Permissão para deletar permanentemente perfis'],
 
             // Submissoes
+            ['name' => 'review_teaching_proposals', 'guard_name' => 'admin', 'description' => 'Analisar propostas de ministração'],
             ['name' => 'view_submissoes', 'guard_name' => 'admin', 'description' => 'Permissão para visualizar submissões'],
             ['name' => 'create_submissoes', 'guard_name' => 'admin', 'description' => 'Permissão para criar submissões'],
             ['name' => 'edit_submissoes', 'guard_name' => 'admin', 'description' => 'Permissão para editar submissões'],

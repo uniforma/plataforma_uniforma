@@ -32,6 +32,9 @@ class ProfileController extends Controller
         $guard = $this->currentGuard();
         $user = auth($guard)->user();
         $user->fill($request->validated());
+        if ($guard === 'user') {
+            $user->recommendation_emails_enabled = $request->boolean('recommendation_emails_enabled');
+        }
 
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;

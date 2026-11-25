@@ -18,7 +18,7 @@ class PropostaMinistracaoController extends Controller
         );
 
         abort_unless(
-            $user->roles()->whereIn('name', ['docente', 'tecnico'])->exists(),
+            $user->roles()->whereIn('name', ['docente', 'tecnico', 'servidor'])->exists(),
             403,
             'Você não tem permissão para ministrar.'
         );
@@ -39,7 +39,7 @@ class PropostaMinistracaoController extends Controller
         );
 
         abort_unless(
-            $user->roles()->whereIn('name', ['docente', 'tecnico'])->exists(),
+            $user->roles()->whereIn('name', ['docente', 'tecnico', 'servidor'])->exists(),
             403,
             'Você não tem permissão para ministrar.'
         );

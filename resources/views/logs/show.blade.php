@@ -1,4 +1,4 @@
-﻿<x-admin-layout>
+<x-admin-layout>
     <div class="p-6">
         <x-header title="Log #{{ $log->id }}" description="Detalhes do evento registrado pelo sistema.">
             <x-slot name="actions">
@@ -12,7 +12,7 @@
             <x-card class="xl:col-span-2">
                 <div class="grid gap-6 md:grid-cols-2">
                     <div>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Evento</p>
+                        <p class="text-sm font-medium text-gray-500 ">Evento</p>
                         <div class="mt-1">
                             @php
                                 $eventVariant = match ($log->event) {
@@ -28,38 +28,38 @@
                     </div>
 
                     <div>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Log Name</p>
-                        <p class="mt-1 text-sm font-semibold text-gray-900 dark:text-gray-100">{{ $log->log_name }}</p>
+                        <p class="text-sm font-medium text-gray-500 ">Log Name</p>
+                        <p class="mt-1 text-sm font-semibold text-gray-900 ">{{ $log->log_name }}</p>
                     </div>
 
                     <div>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Descrição</p>
-                        <p class="mt-1 text-sm font-semibold text-gray-900 dark:text-gray-100">{{ $log->description }}</p>
+                        <p class="text-sm font-medium text-gray-500 ">Descrição</p>
+                        <p class="mt-1 text-sm font-semibold text-gray-900 ">{{ $log->description }}</p>
                     </div>
 
                     <div>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Criado em</p>
-                        <p class="mt-1 text-sm font-semibold text-gray-900 dark:text-gray-100">{{ $log->created_at?->format('d/m/Y H:i:s') }}</p>
+                        <p class="text-sm font-medium text-gray-500 ">Criado em</p>
+                        <p class="mt-1 text-sm font-semibold text-gray-900 ">{{ $log->created_at?->format('d/m/Y H:i:s') }}</p>
                     </div>
 
                     <div>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Subject</p>
-                        <p class="mt-1 text-sm font-semibold text-gray-900 dark:text-gray-100">{{ $log->subject_type ?? '-' }}</p>
+                        <p class="text-sm font-medium text-gray-500 ">Subject</p>
+                        <p class="mt-1 text-sm font-semibold text-gray-900 ">{{ $log->subject_type ?? '-' }}</p>
                     </div>
 
                     <div>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Subject ID</p>
-                        <p class="mt-1 text-sm font-semibold text-gray-900 dark:text-gray-100">{{ $log->subject_id ?? '-' }}</p>
+                        <p class="text-sm font-medium text-gray-500 ">Subject ID</p>
+                        <p class="mt-1 text-sm font-semibold text-gray-900 ">{{ $log->subject_id ?? '-' }}</p>
                     </div>
 
                     <div>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Usuário</p>
-                        <p class="mt-1 text-sm font-semibold text-gray-900 dark:text-gray-100">{{ $log->user?->name ?? '-' }}</p>
+                        <p class="text-sm font-medium text-gray-500 ">Usuário</p>
+                        <p class="mt-1 text-sm font-semibold text-gray-900 ">{{ $log->user?->name ?? '-' }}</p>
                     </div>
 
                     <div>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">E-mail</p>
-                        <p class="mt-1 text-sm font-semibold text-gray-900 dark:text-gray-100">{{ $log->user?->email ?? '-' }}</p>
+                        <p class="text-sm font-medium text-gray-500 ">E-mail</p>
+                        <p class="mt-1 text-sm font-semibold text-gray-900 ">{{ $log->user?->email ?? '-' }}</p>
                     </div>
                 </div>
             </x-card>
@@ -67,8 +67,8 @@
             <x-card>
                 <div class="space-y-4">
                     <div>
-                        <h3 class="text-sm font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-200">Propriedades</h3>
-                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Payload bruto do evento registrado.</p>
+                        <h3 class="text-sm font-semibold uppercase tracking-wide text-gray-700 ">Propriedades</h3>
+                        <p class="mt-1 text-sm text-gray-500 ">Payload bruto do evento registrado.</p>
                     </div>
 
                     <pre class="overflow-x-auto rounded-lg bg-surface-950 p-4 text-xs leading-6 text-gray-100">{{ json_encode($log->properties, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
@@ -76,8 +76,8 @@
 
                 <div class="space-y-4 mt-4">
                     <div>
-                        <h3 class="text-sm font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-200">Atributos Alterados</h3>
-                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Lista de atributos que foram modificados durante o evento.</p>
+                        <h3 class="text-sm font-semibold uppercase tracking-wide text-gray-700 ">Atributos Alterados</h3>
+                        <p class="mt-1 text-sm text-gray-500 ">Lista de atributos que foram modificados durante o evento.</p>
                     </div>
 
                     <pre class="overflow-x-auto rounded-lg bg-surface-950 p-4 text-xs leading-6 text-gray-100">{{ json_encode($log->attribute_changes, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>

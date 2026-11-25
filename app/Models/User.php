@@ -18,7 +18,7 @@ use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Activitylog\Support\LogOptions;
 use Spatie\Permission\Traits\HasRoles;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'cpf', 'gender', 'password', 'skills', 'knowledge_areas', 'recommendation_emails_enabled'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -48,6 +48,34 @@ class User extends Authenticatable
             ->value('guard_name');
     }
 
+    protected static function booted(): void
+    {
+        static::saved(function (self $user) {
+            if ($user->wasChanged('skills') || $user->wasRecentlyCreated) {
+                KnowledgeTerm::remember(KnowledgeTerm::SKILL, $user->skills ?? []);
+            }
+            if ($user->wasChanged('knowledge_areas') || $user->wasRecentlyCreated) {
+                KnowledgeTerm::remember(KnowledgeTerm::AREA, $user->knowledge_areas ?? []);
+            }
+        });
+    }
+
+    public function setSkillsAttribute(?array $values): void
+    {
+        $this->attributes['skills'] = json_encode($this->normalizeTerms($values));
+    }
+
+    public function setKnowledgeAreasAttribute(?array $values): void
+    {
+        $this->attributes['knowledge_areas'] = json_encode($this->normalizeTerms($values));
+    }
+
+    private function normalizeTerms(?array $values): array
+    {
+        return collect($values ?? [])->map(fn ($value) => KnowledgeTerm::normalize((string) $value))
+            ->filter()->unique()->values()->all();
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -58,6 +86,9 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'skills' => 'array',
+            'knowledge_areas' => 'array',
+            'recommendation_emails_enabled' => 'boolean',
         ];
     }
 

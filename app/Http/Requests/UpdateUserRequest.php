@@ -2,11 +2,17 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidCpf;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class UpdateUserRequest extends FormRequest
 {
+    protected function prepareForValidation(): void
+    {
+        $this->merge(['cpf' => ValidCpf::digits($this->input('cpf'))]);
+    }
+
     public function authorize(): bool
     {
         return true;
@@ -17,7 +23,9 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->route('user'))],
-            'role' => ['required', 'string', Rule::exists('roles', 'name')->where('guard_name', 'user')],
+            'role' => ['required', 'string', Rule::in(['aluno', 'servidor'])],
+            'cpf' => ['required', new ValidCpf, Rule::unique('users', 'cpf')->ignore($this->route('user'))],
+            'gender' => ['required', Rule::in(['feminino', 'masculino', 'nao_binario', 'outro', 'nao_informar'])],
         ];
     }
 

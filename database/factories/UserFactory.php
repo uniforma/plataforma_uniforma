@@ -27,6 +27,8 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
+            'cpf' => $this->validCpf(),
+            'gender' => 'nao_informar',
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
@@ -41,5 +43,20 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    private function validCpf(): string
+    {
+        $digits = fake()->unique()->numerify('#########');
+        for ($length = 9; $length < 11; $length++) {
+            $sum = 0;
+            for ($position = 0; $position < $length; $position++) {
+                $sum += (int) $digits[$position] * ($length + 1 - $position);
+            }
+            $remainder = ($sum * 10) % 11;
+            $digits .= $remainder === 10 ? '0' : (string) $remainder;
+        }
+
+        return $digits;
     }
 }

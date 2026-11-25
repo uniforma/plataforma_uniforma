@@ -1,4 +1,5 @@
 <x-guest-layout>
+    <div class="mb-6"><p class="text-xs font-bold uppercase tracking-widest text-primary-500">Acesso à conta</p><h1 class="mt-2 text-3xl font-bold text-slate-950">Definir nova senha</h1></div>
     <form method="POST" action="{{ route('password.store') }}" class="space-y-3">
         @csrf
 

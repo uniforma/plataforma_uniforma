@@ -7,17 +7,17 @@
                 <x-slot name="filters">
                     <div class="grid gap-4 md:grid-cols-3">
                         <div>
-                            <label for="event" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-200">Event</label>
-                            <select
+                            <label for="event" class="mb-1 block text-sm font-medium text-gray-700 ">Event</label>
+                            <x-select
                                 id="event"
                                 name="event"
-                                class="block w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-white/10 dark:bg-surface-800 dark:text-gray-100"
+                                class="block w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500   "
                             >
                                 <option value="">Todos</option>
                                 @foreach (['created', 'updated', 'deleted', 'restored', 'enabled', 'disabled'] as $event)
                                     <option value="{{ $event }}" @selected(request('event') === $event)>{{ $event }}</option>
                                 @endforeach
-                            </select>
+                            </x-select>
                         </div>
 
                         <x-input
@@ -73,7 +73,7 @@
                     </x-table.row>
                 @empty
                     <x-table.row>
-                        <x-table.td colspan="5" class="py-4 text-center text-gray-500 dark:text-gray-400">
+                        <x-table.td colspan="5" class="py-4 text-center text-gray-500 ">
                             Nenhum log encontrado.
                         </x-table.td>
                     </x-table.row>

@@ -5,16 +5,16 @@
 
 @php
     $iconClass = match($type) {
-        'success' => 'text-green-500 dark:text-green-400 bg-green-100 dark:bg-green-800',
-        'error' => 'text-red-500 dark:text-red-400 bg-red-100 dark:bg-red-800',
-        'warning' => 'text-orange-500 dark:text-orange-400 bg-orange-100 dark:bg-orange-800',
-        default => 'text-blue-500 dark:text-blue-400 bg-blue-100 dark:bg-blue-800',
+        'success' => 'text-green-500  bg-green-100 ',
+        'error' => 'text-red-500  bg-red-100 ',
+        'warning' => 'text-orange-500  bg-orange-100 ',
+        default => 'text-blue-500  bg-blue-100 ',
     };
 @endphp
 
 @if ($message)
-    <div 
-        x-data="{ show: true }" 
+    <div
+        x-data="{ show: true }"
         x-init="setTimeout(() => show = false, 4000)"
         x-show="show"
         x-transition:enter="transform ease-out duration-300 transition"
@@ -23,7 +23,7 @@
         x-transition:leave="transition ease-in duration-100"
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0"
-        class="fixed top-4 right-4 z-50 flex items-center w-full max-w-xs p-4 space-x-3 text-gray-500 bg-white rounded-lg shadow-lg dark:text-gray-400 dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
+        class="fixed top-4 right-4 z-50 flex items-center w-full max-w-xs p-4 space-x-3 text-gray-500 bg-white rounded-lg shadow-lg   border border-gray-200 "
         role="alert"
     >
         <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg {{ $iconClass }}">
@@ -42,10 +42,10 @@
             @endif
         </div>
         <div class="ms-3 text-sm font-normal">{{ $message }}</div>
-        <button 
-            @click="show = false" 
-            type="button" 
-            class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" 
+        <button
+            @click="show = false"
+            type="button"
+            class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8    "
             aria-label="Close"
         >
             <span class="sr-only">Close</span>

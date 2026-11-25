@@ -1,11 +1,11 @@
-<nav x-data="{ open: false }" class="bg-white sticky top-0 z-40 rounded-b-2xl border border-white/5 dark:bg-[#333931] dark:text-gray-100 text-gray-800">
+<nav x-data="{ open: false }" class="sticky top-0 z-40 border-b border-slate-200 bg-white text-slate-800 shadow-sm">
     <!-- Primary Navigation Menu -->
     <div class="max-w-full px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
             <!-- Mobile Hamburger (Left) -->
             <div class="flex items-center md:hidden">
                 <button @click="$dispatch('toggle-sidebar')"
-                    class="inline-flex items-center justify-center rounded-md p-2 text-gray-300 transition duration-150 ease-in-out hover:bg-white/10 hover:text-white focus:bg-white/10 focus:outline-none focus:text-white">
+                    class="inline-flex items-center justify-center rounded-md p-2 text-slate-700 transition hover:bg-slate-100 focus:outline-none">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
@@ -14,7 +14,7 @@
 
             <!-- Mobile Logo (Center) -->
             <div class="flex flex-1 items-center justify-center md:hidden">
-                <x-application-logo class="block h-9 w-auto fill-current text-white" />
+                <x-application-logo class="block h-9 w-auto fill-current text-[#142c59]" />
             </div>
 
             <!-- Desktop push right -->
@@ -25,7 +25,7 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <!-- Show normal name on Desktop, circle on Mobile -->
-                        <button class="inline-flex items-center rounded-md border border-transparent px-2 py-2 text-sm font-medium leading-4 dark:text-gray-100 transition ease-in-out duration-150 hover:bg-white/10 focus:outline-none md:px-3">
+                        <button class="inline-flex items-center rounded-xl border border-slate-200 px-3 py-2 text-sm font-medium leading-4 text-slate-700 transition hover:bg-slate-50 focus:outline-none md:px-3">
                             <!-- Desktop view -->
                             <div class="hidden items-center md:flex">
                                 <div>{{ Auth::user()->name }}</div>
@@ -38,7 +38,7 @@
 
                             <!-- Mobile view: Circle with Initial -->
                             <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10 md:hidden">
-                                <span class="text-sm font-bold text-gray-800 dark:text-white">{{ substr(Auth::user()->name, 0, 1) }}</span>
+                                <span class="text-sm font-bold text-gray-800 ">{{ substr(Auth::user()->name, 0, 1) }}</span>
                             </div>
                         </button>
                     </x-slot>

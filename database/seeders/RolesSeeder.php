@@ -17,9 +17,9 @@ class RolesSeeder extends Seeder
         app(PermissionRegistrar::class)->forgetCachedPermissions();
 
         $adminRole = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'admin']);
-        $discenteRole = Role::firstOrCreate(['name' => 'discente', 'guard_name' => 'user']);
-        Role::firstOrCreate(['name' => 'docente', 'guard_name' => 'user']);
-        Role::firstOrCreate(['name' => 'tecnico', 'guard_name' => 'user']);
+        $coordinatorRole = Role::firstOrCreate(['name' => 'coordenador', 'guard_name' => 'admin']);
+        $alunoRole = Role::firstOrCreate(['name' => 'aluno', 'guard_name' => 'user']);
+        Role::firstOrCreate(['name' => 'servidor', 'guard_name' => 'user']);
 
         $legacyRole = Role::query()
             ->where('name', 'user')
@@ -27,8 +27,8 @@ class RolesSeeder extends Seeder
             ->first();
 
         if ($legacyRole) {
-            $legacyRole->users()->withTrashed()->each(function ($user) use ($legacyRole, $discenteRole) {
-                $user->assignRole($discenteRole);
+            $legacyRole->users()->withTrashed()->each(function ($user) use ($legacyRole, $alunoRole) {
+                $user->assignRole($alunoRole);
                 $user->removeRole($legacyRole);
             });
 
@@ -37,6 +37,7 @@ class RolesSeeder extends Seeder
 
         $permissions = Permission::query()->where('guard_name', 'admin')->get();
         $adminRole->syncPermissions($permissions);
+        $coordinatorRole->syncPermissions($permissions->whereIn('name', ['view_submissoes', 'review_teaching_proposals']));
 
         app(PermissionRegistrar::class)->forgetCachedPermissions();
     }
