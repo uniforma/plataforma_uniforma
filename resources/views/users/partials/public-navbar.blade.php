@@ -2,6 +2,7 @@
     $navLinks = [
         ['label' => 'Início', 'href' => route('home'), 'active' => request()->routeIs('home'), 'icon' => 'ph-house'],
         ['label' => 'Demandas', 'href' => route('home').'#submissoes', 'active' => request()->routeIs('user.submissions.showSub'), 'icon' => 'ph-files'],
+        ['label' => 'Submissões aprovadas','href' => route('submissions.approved'),'active' => request()->routeIs('submissions.approved'),'icon' => 'ph-seal-check',],
         ['label' => 'Formações', 'href' => route('offers.index'), 'active' => request()->routeIs('offers.*'), 'icon' => 'ph-graduation-cap'],
         ['label' => 'Sobre', 'href' => route('about'), 'active' => request()->routeIs('about'), 'icon' => 'ph-info'],
         ['label' => 'Perguntas frequentes', 'href' => route('faq'), 'active' => request()->routeIs('faq'), 'icon' => 'ph-question'],
