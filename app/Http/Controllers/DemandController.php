@@ -20,7 +20,7 @@ class DemandController extends Controller
         $metrics = $this->demandRepository->metrics();
         $voteDemands = $this->demandRepository->getMoreVoted($userId);
         $recentDemands = $this->demandRepository->getMoreRecent($userId);
-  
+
 
         return view('users.vitrine-submissao', compact('metrics', 'voteDemands', 'recentDemands'));
     }
@@ -131,5 +131,18 @@ class DemandController extends Controller
         return view('users.submission-panel', compact('allDemands'));
     }
 
+    public function approved(Request $request)
+    {
+        $validated = $request->validate([
+            'search' => ['nullable', 'string', 'max:255'],
+        ]);
 
+        $search = trim($validated['search'] ?? '');
+        $approvedDemands = $this->demandRepository->getApproved(
+            auth('user')->id(),
+            $search
+        );
+
+        return view('users.approved-submissions', compact('approvedDemands', 'search'));
+    }
 }

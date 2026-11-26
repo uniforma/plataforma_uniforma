@@ -116,23 +116,36 @@ class DemandRepository extends BaseRepository
         return $query;
     }
 
-    public function getAllPublic(
-    ?int $userId = null,
-    $request = null,
-    int $perPage = 15
-    ): LengthAwarePaginator
-    {
+        public function getAllPublic(
+        ?int $userId = null,
+        $request = null,
+        int $perPage = 15
+    ): LengthAwarePaginator {
         $perPage = min(
             max((int) ($request?->input('per_page', $perPage) ?? $perPage), 1),
             100
         );
 
-    return $this->publicQuery($userId)
-        ->applyQueryFilters($request)
-        ->orderByDesc('created_at')
-        ->paginate($perPage)
-        ->withQueryString();
-}
+        return $this->publicQuery($userId)
+            ->applyQueryFilters($request)
+            ->orderByDesc('created_at')
+            ->paginate($perPage)
+            ->withQueryString();
+    }
 
+    public function getApproved(?int $userId = null, string $search = ''): LengthAwarePaginator
+    {
+        $query = $this->publicQuery($userId)
+            ->where('status', SubmissaoStatus::Oficializado->value);
 
+        if ($search !== '') {
+            $query->where('title', 'like', '%' . $search . '%');
+        }
+
+        return $query
+            ->latest()
+            ->orderByDesc('id')
+            ->paginate(15)
+            ->appends(['search' => $search]);
+    }
 }

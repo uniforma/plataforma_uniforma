@@ -19,6 +19,7 @@ use App\Http\Controllers\PropostaMinistracaoController;
 require __DIR__.'/auth.php';
 
 Route::get('/', [DemandController::class, 'index'])->name('home');
+Route::get('/submissoes/aprovadas', [DemandController::class, 'approved'])->name('submissions.approved');
 Route::get('/submissoes/{submissao}', [DemandController::class, 'show'])->name('demands.show');
 Route::get('/ofertas', [OfferController::class, 'index'])->name('offers.index');
 Route::get('/ofertas/{submissao}', [OfferController::class, 'show'])->name('offers.show');
